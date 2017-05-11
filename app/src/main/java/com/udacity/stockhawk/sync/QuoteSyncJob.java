@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 
@@ -31,11 +32,14 @@ import yahoofinance.quotes.stock.StockQuote;
 public final class QuoteSyncJob {
 
     private static final int ONE_OFF_ID = 2;
-    private static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
+    public static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
     private static final int PERIOD = 300000;
     private static final int INITIAL_BACKOFF = 10000;
     private static final int PERIODIC_ID = 1;
     private static final int YEARS_OF_HISTORY = 2;
+
+    public static final String ACTION_ADD_STOCK = "com.udacity.stockhawk.ACTION_ADD_STOCK";
+    public static final String INVALID_STOCK_MESSAGE = "com.udacity.stockhawk.EXTRA_MESSAGE";
 
     private QuoteSyncJob() {
     }
@@ -73,6 +77,7 @@ public final class QuoteSyncJob {
 
 
                 Stock stock = quotes.get(symbol);
+                if (stock.getName() != null) {
                 StockQuote quote = stock.getQuote();
 
                 float price = quote.getPrice().floatValue();
@@ -102,20 +107,31 @@ public final class QuoteSyncJob {
                 quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
 
                 quoteCVs.add(quoteCV);
-
+                } else {
+                    String message = context.getString(R.string.error_invalid_stock_symbol);
+                    Intent intent = new Intent(ACTION_ADD_STOCK);
+                    intent.putExtra(INVALID_STOCK_MESSAGE, symbol + "  " + message);
+                    context.sendBroadcast(intent);
+                    PrefUtils.removeStock(context, symbol);
+                }
             }
 
             context.getContentResolver()
                     .bulkInsert(
                             Contract.Quote.URI,
                             quoteCVs.toArray(new ContentValues[quoteCVs.size()]));
-
-            Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
-            context.sendBroadcast(dataUpdatedIntent);
+            updateWidget(context);
 
         } catch (IOException exception) {
             Timber.e(exception, "Error fetching stock quotes");
         }
+    }
+
+    public static void updateWidget(Context context) {
+
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
     }
 
     private static void schedulePeriodic(Context context) {
@@ -167,6 +183,5 @@ public final class QuoteSyncJob {
 
         }
     }
-
 
 }

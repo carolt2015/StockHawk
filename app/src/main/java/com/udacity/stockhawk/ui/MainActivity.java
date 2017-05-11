@@ -1,6 +1,9 @@
 package com.udacity.stockhawk.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -27,6 +31,9 @@ import com.udacity.stockhawk.sync.QuoteSyncJob;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
+
+import static com.udacity.stockhawk.sync.QuoteSyncJob.ACTION_ADD_STOCK;
+import static com.udacity.stockhawk.sync.QuoteSyncJob.INVALID_STOCK_MESSAGE;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
@@ -47,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onClick(String symbol) {
         Timber.d("Symbol clicked: %s", symbol);
+        Intent intent  =    new Intent(this,DetailStockActivity.class);
+        intent.putExtra(DetailStockActivity.STOCK_SYMBOL, symbol);
+        startActivity(intent);
+
     }
 
     @Override
@@ -78,9 +89,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 String symbol = adapter.getSymbolAtPosition(viewHolder.getAdapterPosition());
                 PrefUtils.removeStock(MainActivity.this, symbol);
                 getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+
+                //Updates widget
+                QuoteSyncJob.updateWidget(getApplicationContext());
             }
         }).attachToRecyclerView(stockRecyclerView);
 
+        stockRecyclerView.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
     }
 
@@ -166,6 +182,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ACTION_ADD_STOCK));
+    }
+    @Override
+    protected void onPause() {
+        unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_activity_settings, menu);
@@ -186,4 +214,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         return super.onOptionsItemSelected(item);
     }
+
+    BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            String message = extras.getString(INVALID_STOCK_MESSAGE);
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }
+
+    };
 }

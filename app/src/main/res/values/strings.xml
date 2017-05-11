@@ -5,6 +5,8 @@
 
     <string name="pref_stocks_key">stocks</string>
 
+    <string name="chart_label">Stock</string>
+    <string name="chart_description">A 2-year comparison of the stock</string>
 
     <string name="pref_display_mode_key">displayMode</string>
     <string name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
@@ -29,7 +31,22 @@
     <string name="error_no_network">No network connectivity! Will load stock cursor when the network is available.</string>
     <string name="error_no_stocks">No stocks added! Hit the floating action button to add one.</string>
 
+    <string name="empty_stock_list">No Stock Information Available</string>
+
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
+    <string name="error_invalid_stock_symbol">is Invalid Stock Symbol</string>
+    <!-- Strings related to Accessibility > Talkback -->
+    <string name="add_symbol_content_description">Add a new stock symbol</string>
+    <string name="enter_new_symbol_content_description">Enter the new stock symbol</string>
+    <!-- Strings related to Widgets -->
+    <string name="title_widget_stock">StockHawk</string>
+    <string name="title_activity_detail_stock">DetailStockActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="currency_label">USD</string>
+
+
+
 
 </resources>

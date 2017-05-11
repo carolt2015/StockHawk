@@ -1,3 +1,23 @@
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
+
+    <!-- widget_stocks_info Widget -->
+
+    <!-- Size = (70dp * n) - 30dp -->
+    <dimen name="widget_stock_default_width">110dp</dimen>
+    <dimen name="widget_stock_default_height">40dp</dimen>
+    <dimen name="widget_stocks_min_resize_width">40dp</dimen>
+    <dimen name="widget_stocks_min_resize_height">@dimen/widget_stock_default_height</dimen>
+    <dimen name="widget_stocks_large_width">220dp</dimen>
+
+    <dimen name="widget_detail_default_width">250dp</dimen>
+    <dimen name="widget_detail_default_height">180dp</dimen>
+    <dimen name="widget_detail_min_resize_width">220dp</dimen>
+    <dimen name="widget_detail_min_resize_height">@dimen/widget_detail_default_height</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="detail_current_date_price_size">28sp</dimen>
+    <dimen name="detail_view_price_size">32sp</dimen>
+    <dimen name="detail_view_symbol_size">40sp</dimen>
+    <dimen name="detail_currency_label_size">22sp</dimen>
 </resources>

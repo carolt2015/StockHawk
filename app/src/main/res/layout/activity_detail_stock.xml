@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/material_blue_500"
+tools:context=".ui.StockDetailActivity">
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/text_view_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_view_symbol_size"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:id="@+id/text_current_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_current_date_price_size"
+            android:textColor="@color/white"/>
+
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_detail_display"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_view_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="@dimen/detail_view_price_size"
+            android:layout_weight="2"
+            android:textColor="@color/white" />
+
+
+
+        <TextView
+            android:id="@+id/text_view_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_current_date_price_size"
+            android:textStyle="bold"
+            android:paddingRight="10sp"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/text_view_percent_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_current_date_price_size"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.design.widget.AppBarLayout>
+
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh_detail1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</android.support.v4.widget.SwipeRefreshLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
+
+<TextView
+    android:id="@+id/error_detail"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:textAppearance="@android:style/TextAppearance.Medium"
+    android:visibility="gone" />
+
+</android.support.design.widget.CoordinatorLayout>
