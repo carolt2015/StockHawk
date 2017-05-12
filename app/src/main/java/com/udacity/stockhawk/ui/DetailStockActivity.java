@@ -45,8 +45,6 @@ import butterknife.ButterKnife;
 public class DetailStockActivity extends AppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor> {
 
-//    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
     @BindView(R.id.swipe_refresh_detail1)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.error_detail)
@@ -147,6 +145,7 @@ public class DetailStockActivity extends AppCompatActivity implements
             }
 
                 String history = data.getString(Contract.Quote.POSITION_HISTORY);
+
                 fillChart(history);
 
         }
@@ -170,7 +169,6 @@ public class DetailStockActivity extends AppCompatActivity implements
         Calendar calendar = Calendar.getInstance();
 
         for (int i = 0; i < linesLength; i++){
-
             String[] dateAndPrice = lines[linesLength - i - 1].split(", ");
             calendar.setTimeInMillis(Long.valueOf(dateAndPrice[0]));
             dates[i] = formatter.format(calendar.getTime());
